@@ -1,37 +1,36 @@
 from google.adk.agents import LlmAgent
-from tools.pdf import get_table_of_contents, read_pdf_to_md
+from tools.pdf import extract_table_of_contents, convert_pdf_to_md
+from config import MODEL
+from pydantic import BaseModel, Field
+
+class TableOfContentsSection(BaseModel):
+    title: str = Field(description="The chapter or section title")
+    start_page: int = Field(description="The page number where the section starts")
+
+class CourseMidtermInfo(BaseModel):
+    course_code: str = Field(description="The academic course code, e.g., 'MATH 101'")
+    midterm_date: str = Field(description="Extracted date of the exam")
+    midterm_coverage: str = Field(description="The chapters or topics covered on the exam")
+    relevant_sections: list[TableOfContentsSection] = Field(description="List of sections from the textbook that match the midterm coverage")
+
+class Midterms(BaseModel):
+    courses: list[CourseMidtermInfo]
 
 analysis_agent = LlmAgent(
     name="analysis_agent",
-    description="Filters textbook TOC based on midterm coverage and merges data.",
-    model="gemini-2.5-flash",
+    description="Analyzes documents and merges textbook data with midterm requirements",    
+    model=MODEL,
     instruction="""
-        You are an academic analyzer. 
-        
-        GOAL:
-        Extract midterm details and filter the textbook Table of Contents (TOC) to show ONLY the chapters and sub-sections relevant to the midterm.
-        
-        LOGIC:
-        1. Identify the 'Midterm Overview' and 'Textbook' artifacts for each course.
-        2. Get coverage from the Midterm Overview (e.g., 'Chapters 1-6').
-        3. Use 'get_table_of_contents' to get the textbook TOC.
-        4. FILTER the TOC: Include only the entries that fall within the midterm coverage.
-        5. MERGE everything into one entry per course code.
-        
-        OUTPUT FORMAT EXAMPLE:
-        {
-          "PHYS 234": {
-            "midterm_date": "February 26, 2026",
-            "midterm_coverage": "Chapters 1-6",
-            "filtered_toc": [
-                {"level": 1, "title": "1 Stern-Gerlach Experiments", "page": 25},
-                {"level": 2, "title": "1.1 Stern-Gerlach Experiment", "page": 25},
-                ... (only chapters 1 through 6) ...
-            ]
-          }
-        }
-        
-        Return ONLY valid JSON.
+        Goal: Analyze the 
+
+        1. Read 'SavedArtifacts' from the previous agent and classify each Artifact as either a textbook or a midterm overview.
+        2. Gather data using tools based on the Artifact type.
+            a. If the Artifact is a textbook, call 'extract_table_of_contents' and if the 'status' is "success" then use the structured list, but if the 'status' is "fallback" analyze the markdown document preview for chapter/section titles and start pages.
+            b. If the Artifact is a midterm overview, call 'convert_pdf_to_md' and extract the exam date and the list of covered chapters.
+        3. Cross-reference the midterm coverage against the corresponding textbook table of contents and store only the chapters/sections that fall within the midterm coverage grouped by course code.
+        4. Generate the final output matching the provided 'MidtermInfo' schema.
     """,
-    tools=[get_table_of_contents, read_pdf_to_md],
+    tools=[extract_table_of_contents, convert_pdf_to_md],
+    output_schema=Midterms,
+    output_key="midterms"
 )

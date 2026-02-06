@@ -3,7 +3,7 @@ from agents.reception_agent import reception_agent
 from agents.analysis_agent import analysis_agent
 
 root_agent = SequentialAgent(
-    name="pdf_summary_pipeline",
+    name="root_agent",
     sub_agents=[
         reception_agent,
         analysis_agent,
