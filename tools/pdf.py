@@ -18,4 +18,7 @@ def get_table_of_contents(pdf_path):
     except Exception as e:
         print("Error: " + str(e))
 
-print(get_table_of_contents("bucket/textbooks/David H McIntyre_ Corinne A Manogue_ Janet Tate_ Oregon State Un - Quantum mechanics _ a paradigms approach (2012, Pearson ).pdf"))
+def analyze_midterm_overview(pdf_path):
+    md_text = pymupdf4llm.to_markdown(pdf_path)
+    # print("First 25 pages read successfully.")
+    return md_text
