@@ -15,19 +15,4 @@ async def save_pdf_artifact(tool_context: ToolContext, file_path: str, filename:
     )
 
     await tool_context.save_artifact(filename, pdf_artifact_part)
-
-
-
-async def list_uploaded_pdfs(tool_context: ToolContext) -> list[str]:
-    """
-    Returns artifact filenames for uploaded PDFs in the current session/user scope.
-    """
-
-    artifact_names = await tool_context.list_artifacts()
-
-    pdfs = [
-        name for name in artifact_names
-        if name.lower().endswith(".pdf")
-    ]
-
-    return pdfs
+    return {"status": "success", "saved_filename": filename}
