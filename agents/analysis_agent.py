@@ -18,7 +18,7 @@ class Midterms(BaseModel):
 
 analysis_agent = LlmAgent(
     name="analysis_agent",
-    description="Analyzes documents and filters midterm information",    
+    description="Analyzes documents and filters midterm information.",    
     model=ANALYSIS_MODEL,
     instruction="""
         Goal: Produce a structured summary of midterm exam requirements by extracting data from midterm overviews and textbooks.
@@ -29,8 +29,6 @@ analysis_agent = LlmAgent(
             b. If the Artifact is a midterm overview, call 'convert_pdf_to_md' and extract the exam date and the list of covered chapters.
         3. Cross-reference the midterm coverage against the corresponding textbook table of contents and store only the chapters/sections that fall within the midterm coverage grouped by course code.
         4. Generate the final output matching the provided 'MidtermInfo' schema.
-        5. Print the final output for the user.
-
     """,
     tools=[extract_table_of_contents, convert_pdf_to_md],
     output_schema=Midterms,

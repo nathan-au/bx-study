@@ -13,7 +13,7 @@ class SavedArtifacts(BaseModel):
 
 reception_agent = LlmAgent(
     name="reception_agent",
-    description="Saves local PDFs as session Artifacts",
+    description="Saves local PDFs as session Artifacts.",
     model=RECEPTION_MODEL,
     instruction="""
         Goal: Process the provided PDF file paths and store them as session Artifacts.
@@ -23,7 +23,6 @@ reception_agent = LlmAgent(
         3. Save each file exactly once using 'save_pdf_artifact'.
         4. Verify the tool output and only include files where 'status' is "success".
         5. Generate the final output matching the provided 'SavedArtifacts' schema.
-        6. Print the final output for the user.
     """,
     tools=[save_pdf_artifact],
     output_schema=SavedArtifacts,

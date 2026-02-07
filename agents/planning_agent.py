@@ -14,23 +14,15 @@ class StudyPlan(BaseModel):
 
 planning_agent = LlmAgent(
     name="planning_agent",
-    description="Creates a study plan based on midterm and textbook content",
+    description="Creates a study plan based on midterm info and workload estimates.",
     model=PLANNING_MODEL,
     instruction="""
+        Goal: Create a structured study plan for the upcoming midterm exams based on the study workload.
 
-        Goal: Create a structured study plan for the upcoming midterm exams by analyzing textbook section lengths.
-
-        1. Read 'Midterms' from the previous agent
-        2. Predict how many hours it will take for the user to study/review each section based on the number of pages between the section start page and the following section start page.
-        3. Get the current date and time using 'get_current_datetime'.
-        4. Equally distribute the sections across the days between today and the midterm exam date.
-
-        OUTPUT FORMAT:
-        Print a clear Markdown table with the following columns:
-        | Date | Course | Section | Estimated Hours |
-
-        Finish with a brief summary of the total study time required.
-
+        1. Read 'Midterms' and 'StudyWorkload' from the previous agents.
+        2. Get the current date and time using 'get_current_datetime'.
+        3. Equally distribute the sections across the days between today and the midterm exam date.
+        4. Generate the final output in comma-separated value format with the first column 'Date', the second column 'Course', the third column 'Section', and the final column 'Workload' (as in the estimated time to study/review the section in minutes) where each row is separated by a new line character.
     """,
     tools=[get_current_datetime],
     # output_schema=StudyPlan,
