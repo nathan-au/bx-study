@@ -18,9 +18,9 @@ reception_agent = LlmAgent(
     instruction="""
         Goal: Process the provided PDF file paths and store them as session Artifacts.
 
-        1. Identify each PDF file path from the user.
-        2. Determine the course code (e.g., 'MATH 101') from the filename, the folder name, or a common prefix shared by the files.
-        3. Save each file using 'save_pdf_artifact'.
+        1. Identify each unique PDF file path from the user.
+        2. Determine the course code (e.g., 'MATH 101') from the filename or the folder name.
+        3. Save each file exactly once using 'save_pdf_artifact'.
         4. Verify the tool output and only include files where 'status' is "success".
         5. Generate the final output matching the provided 'SavedArtifacts' schema.
         6. Print the final output for the user.
