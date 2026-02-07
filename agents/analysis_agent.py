@@ -1,6 +1,6 @@
 from google.adk.agents import LlmAgent
-from tools.pdf import extract_table_of_contents, convert_pdf_to_md
-from config import MODEL
+from tools.analysis_tools import extract_table_of_contents, convert_pdf_to_md
+from config import ANALYSIS_MODEL
 from pydantic import BaseModel, Field
 
 class TableOfContentsSection(BaseModel):
@@ -19,7 +19,7 @@ class Midterms(BaseModel):
 analysis_agent = LlmAgent(
     name="analysis_agent",
     description="Analyzes documents and filters midterm information",    
-    model=MODEL,
+    model=ANALYSIS_MODEL,
     instruction="""
         Goal: Produce a structured summary of midterm exam requirements by extracting data from midterm overviews and textbooks.
 

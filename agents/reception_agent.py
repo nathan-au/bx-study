@@ -1,6 +1,6 @@
 from google.adk.agents import LlmAgent
-from tools.artifacts import save_pdf_artifact
-from config import MODEL
+from tools.reception_tools import save_pdf_artifact
+from config import RECEPTION_MODEL
 from pydantic import BaseModel, Field
 
 class SavedArtifact(BaseModel):
@@ -14,7 +14,7 @@ class SavedArtifacts(BaseModel):
 reception_agent = LlmAgent(
     name="reception_agent",
     description="Saves local PDFs as session Artifacts",
-    model=MODEL,
+    model=RECEPTION_MODEL,
     instruction="""
         Goal: Process the provided PDF file paths and store them as session Artifacts.
 
