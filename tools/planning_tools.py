@@ -1,6 +1,6 @@
 import datetime
 
-def get_current_datetime(**kwargs) -> str:
+def get_current_datetime(**kwargs) -> dict:
     """
         Retrieves the current date and time.
 
@@ -9,7 +9,7 @@ def get_current_datetime(**kwargs) -> str:
     """
 
     try:
-        current_datetime = datetime.datetime.now().isoformat
+        current_datetime = datetime.datetime.now().isoformat()
 
         return {
             "status": "success",
