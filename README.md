@@ -1,5 +1,5 @@
 # bx-study: Agentic AI Study Planner
-<img width="1624" height="1094" alt="Screenshot 2026-02-07 at 17 26 32" src="https://github.com/user-attachments/assets/110a7729-4a22-42a6-9b4e-a8a23936e7d7" />
+<img width="1624" height="1094" alt="Screenshot 2026-02-08 at 10 32 20" src="https://github.com/user-attachments/assets/b21a169e-adc7-4d28-8e99-00ce20147f2b" />
 
 ## Project Overview
 
